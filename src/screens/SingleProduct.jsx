@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   useAddProductReviewMutation,
   useGetProductQuery,
@@ -9,11 +9,14 @@ import moment from "moment/moment";
 import Error from "../components/loadingError/Error";
 import Loading from "../components/loadingError/Loading";
 import Rating from "../components/homeComponents/Rating";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../features/cart/cartSlice";
 
 const SingleProduct = () => {
   const userInfo = { email: "admin@gamil.com" };
   const { productId } = useParams();
-  console.log(productId);
+  const dispatch = useDispatch();
+
   const {
     data: product,
     isLoading,
@@ -23,14 +26,18 @@ const SingleProduct = () => {
   const [addProductReview, { isLoading: reviewLoading, isError: reviewError }] =
     useAddProductReviewMutation(productId);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [qty, setQty] = useState(1);
+  let [qty, setQty] = useState(1);
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    navigate(`/cart/${productId}?qty=${qty}`, { replace: true });
+  const handleAddToCart = (product) => {
+    // e.preventDefault();
+    // navigate(`/cart/${productId}?qty=${qty}`, { replace: true });
+    qty = Number(qty);
+    const cartProduct = { ...product, qty };
+    console.log(cartProduct);
+    dispatch(addToCart(cartProduct));
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -80,7 +87,7 @@ const SingleProduct = () => {
                     </div>
                     {product?.countInStock > 0 ? (
                       <>
-                        <div className="flex-box d-flex justify-content-between align-items-center">
+                        {/* <div className="flex-box d-flex justify-content-between align-items-center">
                           <h6>Quantity</h6>
                           <select
                             value={qty}
@@ -94,10 +101,10 @@ const SingleProduct = () => {
                               )
                             )}
                           </select>
-                        </div>
+                        </div> */}
                         <button
-                          onClick={handleAddToCart}
-                          className="round-black-btn"
+                          onClick={() => handleAddToCart(product)}
+                          className="round-black-btn "
                         >
                           {" "}
                           Add To Cart

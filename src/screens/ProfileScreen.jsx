@@ -1,8 +1,11 @@
 import Header from "../components/Header";
 import ProfileTable from "../components/profileComponents/ProfileTable";
 import Orders from "../components/profileComponents/Orders";
+import moment from "moment";
 
 const ProfileScreen = () => {
+  const auth = JSON.parse(localStorage.getItem("auth"));
+  // console.log(auth.user);
   return (
     <>
       <Header />
@@ -20,10 +23,10 @@ const ProfileScreen = () => {
                 </div>
                 <div className="author-card-details col-md-7">
                   <h5 className="author-card-name mb-2">
-                    {/* <strong>{userInfo?.name}</strong> */}
+                    <strong>{auth?.user?.name}</strong>
                   </h5>
                   <span className="author-card-position">
-                    {/* <>Joined {moment(userInfo?.createdAt).format("LL")}</> */}
+                    <>Joined {moment(auth?.user?.createdAt).format("LL")}</>
                   </span>
                 </div>
               </div>

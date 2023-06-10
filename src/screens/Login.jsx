@@ -1,7 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoginMutation } from "../features/auth/authApi";
 import Error from "../components/loadingError/Error";
 import Loading from "../components/loadingError/Loading";
@@ -9,21 +8,20 @@ import Loading from "../components/loadingError/Loading";
 const Login = () => {
   window.scrollTo(0, 0);
   const location = useLocation();
-  // const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const redirect = location?.search ? location?.search.split("=")[1] : "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login, { data, isLoading, isError, error }] = useLoginMutation();
   console.log(data);
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     navigate(redirect);
-  //   }
-  // }, [redirect, navigate, userInfo]);
+  useEffect(() => {
+    if (data) {
+      navigate(redirect);
+    }
+  }, [redirect, navigate, data]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login({ email, password }));
+    login({ email, password });
   };
   return (
     <>

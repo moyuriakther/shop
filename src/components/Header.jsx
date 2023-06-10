@@ -1,9 +1,37 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../images/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoggedOut } from "../features/auth/authSlice";
+import { updateFilters } from "../features/searchSlice";
 
 const Header = () => {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location);
+  // const history = useNavigate();
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+  const cartQuantity = cartItems.reduce(
+    (totalQty, item) => totalQty + item.qty,
+    0
+  );
+  const userInfo = JSON.parse(localStorage.getItem("auth"));
+
+  useEffect(() => {
+    dispatch(updateFilters({ search: search }));
+  }, [dispatch, search]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    dispatch(updateFilters({ search: search }));
+  };
+
+  const handleLogout = () => {
+    dispatch(userLoggedOut());
+    localStorage.clear();
+  };
   return (
     <div>
       <div className="announcement">
@@ -45,60 +73,60 @@ const Header = () => {
                   </Link>
                 </div>
                 <div className="col-6 d-flex align-items-center justify-content-end login-register">
-                  {/* {userInfo ? ( */}
-                  <div className="btn-group">
-                    <button
-                      type="button"
-                      className="name-button dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i className="fas fa-user"></i>
-                      {/* {userInfo?.name} */}
-                    </button>
-                    <div className="dropdown-menu">
-                      <Link to="/profile" className="dropdown-item">
-                        Profile
-                      </Link>
-                      <Link
-                        to=""
-                        className="dropdown-item"
-                        // onClick={handleLogout}
+                  {userInfo ? (
+                    <div className="btn-group">
+                      <button
+                        type="button"
+                        className="name-button dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
                       >
-                        Logout
-                      </Link>
+                        <i className="fas fa-user"></i>
+                        {userInfo?.name}
+                      </button>
+                      <div className="dropdown-menu">
+                        <Link to="/profile" className="dropdown-item">
+                          Profile
+                        </Link>
+                        <Link
+                          to=""
+                          className="dropdown-item"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                  {/* ) : ( */}
-                  <div className="btn-group">
-                    <button
-                      type="button"
-                      className="name-button dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i className="fas fa-user"></i>
-                      {/* Hi, {userInfo?.name} */}
-                    </button>
-                    <div className="dropdown-menu">
-                      <Link to="/login" className="dropdown-item">
-                        login
-                      </Link>
-                      <Link to="/register" className="dropdown-item">
-                        register
-                      </Link>
+                  ) : (
+                    <div className="btn-group">
+                      <button
+                        type="button"
+                        className="name-button dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        <i className="fas fa-user"></i>
+                        Hi, {userInfo?.user?.name}
+                      </button>
+                      <div className="dropdown-menu">
+                        <Link to="/login" className="dropdown-item">
+                          login
+                        </Link>
+                        <Link to="/register" className="dropdown-item">
+                          register
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                  {/* )} */}
+                  )}
                   <Link to="/cart" className="cart-mobile-icon">
                     <i className="fas fa-shopping-bag"></i>
-                    {/* <span className="badge">{cartItems?.length}</span> */}
+                    <span className="badge">{cartQuantity}</span>
                   </Link>
                 </div>
                 <div className="col-12 d-flex align-items-center">
-                  <form className="input-group">
+                  <form className="input-group" onSubmit={handleSearch}>
                     <input
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
@@ -123,53 +151,58 @@ const Header = () => {
                 </Link>
               </div>
               <div className="col-md-6 col-8 d-flex align-items-center">
-                <form className="input-group">
-                  <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search"
-                    type="search"
-                    className="form-control rounded search"
-                  />
-                  <button type="submit" className="search-button">
-                    Search
-                  </button>
-                </form>
+                {location.pathname === "/cart" ||
+                location.pathname === "/profile" ? (
+                  ""
+                ) : (
+                  <form className="input-group" onSubmit={handleSearch}>
+                    <input
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder="Search"
+                      type="search"
+                      className="form-control rounded search"
+                    />
+                    <button type="submit" className="search-button">
+                      Search
+                    </button>
+                  </form>
+                )}
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-end">
-                {/* {userInfo ? ( */}
-                <div className="btn-group">
-                  <button
-                    type="button"
-                    className="name-button dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    {/* Hi, {userInfo?.name} */}
-                  </button>
-                  <div className="dropdown-menu">
-                    <Link to="/profile" className="dropdown-item">
-                      Profile
-                    </Link>
-                    <Link
-                      to="#"
-                      className="dropdown-item"
-                      // onClick={handleLogout}
+                {userInfo ? (
+                  <div className="btn-group">
+                    <button
+                      type="button"
+                      className="name-button dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
                     >
-                      Logout
-                    </Link>
+                      Hi, {userInfo?.user?.name}
+                    </button>
+                    <div className="dropdown-menu">
+                      <Link to="/profile" className="dropdown-item">
+                        Profile
+                      </Link>
+                      <Link
+                        to="#"
+                        className="dropdown-item"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </Link>
+                    </div>
                   </div>
-                </div>
-                {/* ) : ( */}
-                <div className="login-Register">
-                  <Link to="/login">Login</Link>
-                </div>
-                {/* )} */}
+                ) : (
+                  <div className="login-Register">
+                    <Link to="/login">Login</Link>
+                  </div>
+                )}
 
                 <Link to="/cart" className="cart-mobile-icon">
-                  <i className="fas fa-shopping-bag"></i>
-                  {/* <span className="badge">{cartItems?.length}</span> */}
+                  <i className="fas fa-shopping-bag text-success"></i>
+                  <span className="badge">{cartQuantity}</span>
                 </Link>
               </div>
             </div>

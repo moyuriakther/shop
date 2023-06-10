@@ -42,19 +42,18 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-
+          console.log(result.data);
           localStorage.setItem(
             "auth",
             JSON.stringify({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
+              accessToken: result.data.token,
+              user: result.data,
             })
           );
-
           dispatch(
             userLoggedIn({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
+              accessToken: result.data.token,
+              user: result.data,
             })
           );
         } catch (err) {
@@ -62,40 +61,7 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
-    // adminLogin: builder.mutation({
-    //   query: (data) => ({
-    //     url: "/login",
-    //     method: "POST",
-    //     body: data,
-    //   }),
-
-    //   async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-    //     try {
-    //       const result = await queryFulfilled;
-
-    //       localStorage.setItem(
-    //         "auth",
-    //         JSON.stringify({
-    //           accessToken: result.data.accessToken,
-    //           user: result.data.user,
-    //           admin: result.data.user.role,
-    //         })
-    //       );
-
-    //       dispatch(
-    //         adminLoggedIn({
-    //           accessToken: result.data.accessToken,
-    //           user: result.data.user,
-    //           admin: result.data.user.role,
-    //         })
-    //       );
-    //     } catch (err) {
-    //       // do nothing
-    //     }
-    //   },
-    // }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useAdminLoginMutation } =
-  authApi;
+export const { useLoginMutation, useRegisterMutation } = authApi;

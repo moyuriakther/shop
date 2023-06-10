@@ -4,14 +4,14 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000",
-    // prepareHeaders: async (headers, { getState, endpoint }) => {
-    //   const token = getState()?.auth?.accessToken;
-    //   if (token) {
-    //     headers.set("Authorization", `Bearer ${token}`);
-    //   }
-
-    //   return headers;
-    // },
+    prepareHeaders: async (headers, { getState }) => {
+      const token = getState()?.auth?.accessToken;
+      // console.log(getState());
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: [],
   endpoints: () => ({}),

@@ -11,20 +11,16 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     userLoggedIn: (state, action) => {
+      console.log(action);
       state.accessToken = action.payload.accessToken;
       state.user = action.payload.user;
-      state.role = action.payload.user.role;
+      state.role = action.payload.user.isAdmin;
     },
     userLoggedOut: (state) => {
       state.accessToken = undefined;
       state.user = undefined;
       state.role = undefined;
     },
-    // adminLoggedIn: (state, action) => {
-    //   state.accessToken = action.payload.accessToken;
-    //   state.user = action.payload.user;
-    //   state.role = action.payload.user.role;
-    // },
   },
 });
 

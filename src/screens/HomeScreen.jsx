@@ -7,12 +7,12 @@ import { useParams } from "react-router-dom";
 
 const HomeScreen = () => {
   window.scrollTo(0, 0);
-  const { search, pagenumber } = useParams();
+  const { pagenumber } = useParams();
 
   return (
     <div>
       <Header />
-      <ShopSection search={search} pagenumber={pagenumber} />
+      <ShopSection pagenumber={pagenumber} />
       <CallToActionSection />
       <ContactInfo />
       <Footer />

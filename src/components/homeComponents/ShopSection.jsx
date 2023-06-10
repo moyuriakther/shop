@@ -2,10 +2,21 @@ import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../../features/products/productApi";
 import Loading from "../loadingError/Loading";
 import Error from "../loadingError/Error";
+import { useSelector } from "react-redux";
+import Rating from "./Rating";
 
-const ShopSection = () => {
-  // const { search, pagenumber } = props;
-  const { data: products, isLoading, isError, error } = useGetProductsQuery();
+const ShopSection = (props) => {
+  const { pagenumber } = props;
+  const filters = useSelector((state) => state.filters);
+  const { search } = filters;
+  // console.log(search, pagenumber);
+  const {
+    data: products,
+    isLoading,
+    isError,
+    error,
+  } = useGetProductsQuery(search, pagenumber);
+
   // console.log(products?.products);
   return (
     <div className="container">
@@ -39,11 +50,11 @@ const ShopSection = () => {
                             </Link>
                             new shoe
                           </p>
-                          {/* <Rating
-                      value={product?.rating}
-                      text={`${product?.reviews.length} reviews`}
-                    ></Rating> */}
-                          <h3>$ 200</h3>
+                          <Rating
+                            value={product?.rating}
+                            text={`${product?.reviews.length} reviews`}
+                          ></Rating>
+                          <h3>$ {product?.price}</h3>
                         </div>
                       </div>
                     </div>

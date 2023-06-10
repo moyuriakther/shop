@@ -3,7 +3,8 @@ import { apiSlice } from "../api/apiSlice";
 export const quizMarkApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => `api/products`,
+      query: (search, pagenumber) =>
+        `/api/products?search=${search}&pageNumber=${pagenumber}`,
     }),
     getProduct: builder.query({
       query: (id) => `api/products/${id}`,
