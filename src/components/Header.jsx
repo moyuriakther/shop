@@ -9,7 +9,7 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
   // const history = useNavigate();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
