@@ -10,19 +10,22 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const redirect = location?.search ? location?.search.split("=")[1] : "/";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login, { data, isLoading, isError, error }] = useLoginMutation();
-  console.log(data);
+
   useEffect(() => {
     if (data) {
       navigate(redirect);
     }
   }, [redirect, navigate, data]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     login({ email, password });
   };
+
   return (
     <>
       <Header />

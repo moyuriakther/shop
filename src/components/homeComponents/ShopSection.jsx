@@ -17,7 +17,6 @@ const ShopSection = (props) => {
     error,
   } = useGetProductsQuery(search, pagenumber);
 
-  // console.log(products?.products);
   return (
     <div className="container">
       <div className="section">
@@ -29,7 +28,7 @@ const ShopSection = (props) => {
                   <Loading />
                 </div>
               ) : isError ? (
-                <Error>{error.data.message}</Error>
+                <Error>{error?.data?.message}</Error>
               ) : (
                 <>
                   {products?.products?.map((product) => (
