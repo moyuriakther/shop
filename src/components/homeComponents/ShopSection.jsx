@@ -1,22 +1,22 @@
 import { Link } from "react-router-dom";
-import { useGetProductsQuery } from "../../features/products/productApi";
+import { useGetAllProductsQuery } from "../../features/products/productApi";
 import Loading from "../loadingError/Loading";
 import Error from "../loadingError/Error";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import Rating from "./Rating";
 
-const ShopSection = (props) => {
-  const { pagenumber } = props;
-  const filters = useSelector((state) => state.filters);
-  const { search } = filters;
-  // console.log(search, pagenumber);
+const ShopSection = () => {
+  // const { pagenumber } = props;
+  // const filters = useSelector((state) => state.filters);
+  // const { search } = filters;
+
   const {
     data: products,
     isLoading,
     isError,
     error,
-  } = useGetProductsQuery(search, pagenumber);
-
+  } = useGetAllProductsQuery();
+  console.log(products);
   return (
     <div className="container">
       <div className="section">
@@ -31,7 +31,7 @@ const ShopSection = (props) => {
                 <Error>{error?.data?.message}</Error>
               ) : (
                 <>
-                  {products?.products?.map((product) => (
+                  {products?.map((product) => (
                     <div
                       className="shop col-lg-4 col-md-6 col-sm-6"
                       key={product?._id}
@@ -47,13 +47,16 @@ const ShopSection = (props) => {
                             <Link to={`/products/${product?._id}`}>
                               {product?.name}
                             </Link>
-                            new shoe
                           </p>
                           <Rating
                             value={product?.rating}
                             text={`${product?.reviews.length} reviews`}
                           ></Rating>
-                          <h3>$ {product?.price}</h3>
+                          <div className="flex">
+                            {" "}
+                            <h3>$ {product?.price}</h3>
+                            <i className="fa-regular fa-heart"></i>
+                          </div>
                         </div>
                       </div>
                     </div>
