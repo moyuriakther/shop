@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   useAddProductReviewMutation,
   useGetProductQuery,
@@ -26,7 +26,7 @@ const SingleProduct = () => {
   const [addProductReview, { isLoading: reviewLoading, isError: reviewError }] =
     useAddProductReviewMutation(productId);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   let [qty, setQty] = useState(1);
@@ -35,9 +35,10 @@ const SingleProduct = () => {
     // e.preventDefault();
     // navigate(`/cart/${productId}?qty=${qty}`, { replace: true });
     qty = Number(qty);
-    const cartProduct = { ...product, qty };
-    console.log(cartProduct);
-    dispatch(addToCart(cartProduct));
+    // const cartProduct = { ...product, qty };
+    // console.log(cartProduct);
+    dispatch(addToCart({ product, qty: qty }));
+    navigate("/cart");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -87,9 +88,17 @@ const SingleProduct = () => {
                     </div>
                     {product?.countInStock > 0 ? (
                       <>
-                        {/* <div className="flex-box d-flex justify-content-between align-items-center">
+                        <div className="flex-box d-flex justify-content-between align-items-center">
                           <h6>Quantity</h6>
-                          <select
+                          <input
+                            type="number"
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}
+                            min={1}
+                            max={5}
+                            className="bg-gray-100 text-center"
+                          />
+                          {/* <select
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}
                           >
@@ -100,8 +109,8 @@ const SingleProduct = () => {
                                 </option>
                               )
                             )}
-                          </select>
-                        </div> */}
+                          </select> */}
+                        </div>
                         <button
                           onClick={() => handleAddToCart(product)}
                           className="round-black-btn "

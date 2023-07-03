@@ -12,6 +12,7 @@ const Header = () => {
   // console.log(location);
   // const history = useNavigate();
   const cart = useSelector((state) => state.cart);
+  const { wishlistItems } = useSelector((state) => state?.wishlists);
   const { cartItems } = cart;
   const cartQuantity = cartItems.reduce(
     (totalQty, item) => totalQty + item.qty,
@@ -203,6 +204,10 @@ const Header = () => {
                 <Link to="/cart" className="cart-mobile-icon">
                   <i className="fas fa-shopping-bag text-success"></i>
                   <span className="badge">{cartQuantity}</span>
+                </Link>
+                <Link to="/wishlist" className="cart-mobile-icon">
+                  <i className={`fa-solid fa-heart favorite text-success`}></i>
+                  <span className="badge">{wishlistItems?.length}</span>
                 </Link>
               </div>
             </div>

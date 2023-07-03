@@ -11,6 +11,8 @@ import OrderScreen from "./screens/OrderScreen";
 import NotFound from "./screens/NotFound";
 import Login from "./screens/Login";
 import SingleProduct from "./screens/SingleProduct";
+import Wishlist from "./screens/WishlistScreen";
+// import CartHome from "./components/cart/CartHome";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/payment" element={<PaymentScreen />} />
         <Route path="/placeOrder" element={<PlaceOrderScreen />} />
         <Route path="/order/:id" element={<OrderScreen />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        {/* <Route path="/carts" element={<CartHome />} /> */}
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </>

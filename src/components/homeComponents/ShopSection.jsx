@@ -1,14 +1,23 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../features/products/productApi";
 import Loading from "../loadingError/Loading";
 import Error from "../loadingError/Error";
-// import { useSelector } from "react-redux";
-import Rating from "./Rating";
+// import Rating from "./Rating";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+// import { addToWishlist } from "../../features/wishlist/wishSlice";
+import { addToCart } from "../../features/cart/cartSlice";
+import ProductCard from "./ProductCard";
 
 const ShopSection = () => {
+  const navigate = useNavigate();
+  // const [favoriteProduct, setFavoriteProduct] = useState([]);
   // const { pagenumber } = props;
   // const filters = useSelector((state) => state.filters);
   // const { search } = filters;
+  const dispatch = useDispatch();
+  // const favorites = useSelector((state) => state.favorites.favorites);
+  // const isFavorite = favorites.some((item) => item.id === favoriteProduct.id);
 
   const {
     data: products,
@@ -16,7 +25,17 @@ const ShopSection = () => {
     isError,
     error,
   } = useGetAllProductsQuery();
-  console.log(products);
+
+  // const handleAddToWishlist = (product) => {
+  //   dispatch(addToWishlist(product));
+  //   navigate("/wishlist");
+  // };
+  const handleAddToCart = (product) => {
+    dispatch(addToCart({ product, qty: 1 }));
+    navigate("/cart");
+  };
+  useEffect(() => {}, []);
+
   return (
     <div className="container">
       <div className="section">
@@ -33,10 +52,14 @@ const ShopSection = () => {
                 <>
                   {products?.map((product) => (
                     <div
-                      className="shop col-lg-4 col-md-6 col-sm-6"
+                      className="shop col-lg-3 col-md-6 col-sm-6"
                       key={product?._id}
                     >
-                      <div className="border-product">
+                      <ProductCard
+                        product={product}
+                        handleAddToCart={handleAddToCart}
+                      />
+                      {/* <div className="border-product">
                         <Link to={`/products/${product._id}`}>
                           <div className="shopBack">
                             <img src={product?.image} alt={product?.name} />
@@ -52,13 +75,17 @@ const ShopSection = () => {
                             value={product?.rating}
                             text={`${product?.reviews.length} reviews`}
                           ></Rating>
-                          <div className="flex">
-                            {" "}
+                          <div className="column-flex">
                             <h3>$ {product?.price}</h3>
-                            <i className="fa-regular fa-heart"></i>
+                            <button
+                              onClick={() => handleAddToCart(product)}
+                              className="round-black-small-btn"
+                            >
+                              Add To Cart
+                            </button>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   ))}
                 </>
