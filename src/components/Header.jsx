@@ -11,8 +11,8 @@ const Header = () => {
   const location = useLocation();
   // console.log(location);
   // const history = useNavigate();
-  const cart = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state?.wishlists);
+  const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const cartQuantity = cartItems.reduce(
     (totalQty, item) => totalQty + item.qty,
@@ -27,6 +27,7 @@ const Header = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(updateFilters({ search: search }));
+    console.log(search);
   };
 
   const handleLogout = () => {

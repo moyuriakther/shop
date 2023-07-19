@@ -11,7 +11,10 @@ const ProductCard = (props) => {
         </figure>
       </Link>
       <div className="card-body items-center text-center">
-        <h2 className="card-title shoeName">{name}</h2>
+        <Link to={`/products/${_id}`}>
+          {" "}
+          <h2 className="card-title shoeName">{name}</h2>
+        </Link>
         <p>$ {price}</p>
         <div className="card-actions">
           <button
