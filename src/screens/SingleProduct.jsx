@@ -65,6 +65,7 @@ const SingleProduct = () => {
                   <div className="product-info">
                     <div className="product-name">{product?.name}</div>
                   </div>
+                  {/* <i className="fa-solid fa-heart text-2xl"></i> */}
                   <p>{product?.description}</p>
                   <div className="product-count col-lg-7">
                     <div className="flex-box d-flex justify-content-between align-items-center">
@@ -127,7 +128,12 @@ const SingleProduct = () => {
             <div className="row my-5">
               <div className="col-md-6">
                 <h6 className="mb-3">REVIEWS</h6>
-                {product?.reviews?.length === 0 && <Error>No Reviews</Error>}
+                {product?.reviews?.length === 0 && (
+                  <p>
+                    {product?.reviews?.length} Reviews available for this
+                    product
+                  </p>
+                )}
                 {product?.reviews?.map((review, i) => (
                   <div
                     className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded"

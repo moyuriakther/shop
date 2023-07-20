@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 export const searchSlice = createSlice({
   name: "filters",
   initialState: {
     search: "",
+    activeCategories: [],
   },
   reducers: {
     updateFilters: (state, action) => {
-      // console.log(action);
-      return { ...state, ...action.payload };
+      const upState = { ...state, ...action.payload };
+      return upState;
     },
   },
 });

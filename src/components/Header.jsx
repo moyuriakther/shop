@@ -153,10 +153,7 @@ const Header = () => {
                 </Link>
               </div>
               <div className="col-md-6 col-8 d-flex align-items-center">
-                {location.pathname === "/cart" ||
-                location.pathname === "/profile" ? (
-                  ""
-                ) : (
+                {location.pathname === "/" && (
                   <form className="input-group" onSubmit={handleSearch}>
                     <input
                       value={search}
