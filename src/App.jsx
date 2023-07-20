@@ -12,6 +12,7 @@ import NotFound from "./screens/NotFound";
 import Login from "./screens/Login";
 import SingleProduct from "./screens/SingleProduct";
 import Wishlist from "./screens/WishlistScreen";
+import PrivateRoute from "./components/PrivateRoute";
 // import CartHome from "./components/cart/CartHome";
 
 function App() {
@@ -23,12 +24,54 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cart/:productId?" element={<CartScreen />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="/shipping" element={<ShippingScreen />} />
-        <Route path="/payment" element={<PaymentScreen />} />
-        <Route path="/placeOrder" element={<PlaceOrderScreen />} />
-        <Route path="/order/:id" element={<OrderScreen />} />
-        <Route path="/wishlist" element={<Wishlist />} />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <ProfileScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shipping"
+          element={
+            <PrivateRoute>
+              <ShippingScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <PrivateRoute>
+              <PaymentScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/placeOrder"
+          element={
+            <PrivateRoute>
+              <PlaceOrderScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/order/:id"
+          element={
+            <PrivateRoute>
+              <OrderScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/wishlist"
+          element={
+            <PrivateRoute>
+              <Wishlist />
+            </PrivateRoute>
+          }
+        />
         {/* <Route path="/carts" element={<CartHome />} /> */}
         <Route path="/*" element={<NotFound />} />
       </Routes>
