@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -7,10 +7,18 @@ import {
 } from "../features/products/productApi";
 import moment from "moment/moment";
 import Error from "../components/loadingError/Error";
+import Toast from "../components/loadingError/Toast";
 import Loading from "../components/loadingError/Loading";
 import Rating from "../components/homeComponents/Rating";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
+
+const toastObjects = {
+  pauseOnFocusLoss: false,
+  draggable: false,
+  pauseOnHover: false,
+  autoClose: 2000,
+};
 
 const SingleProduct = () => {
   const userInfo = { email: "admin@gamil.com" };
@@ -23,26 +31,41 @@ const SingleProduct = () => {
     isError,
     error,
   } = useGetProductQuery(productId);
-  const [addProductReview, { isLoading: reviewLoading, isError: reviewError }] =
-    useAddProductReviewMutation(productId);
+  const [
+    addProductReview,
+    {
+      isLoading: reviewLoading,
+      isError: reviewError,
+      error: errorMessage,
+      isSuccess,
+    },
+  ] = useAddProductReviewMutation();
 
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   let [qty, setQty] = useState(1);
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Product added successfully", toastObjects);
+      setRating(0);
+      setComment("");
+    }
+  }, [isSuccess]);
+
   const handleAddToCart = (product) => {
-    // e.preventDefault();
-    // navigate(`/cart/${productId}?qty=${qty}`, { replace: true });
     qty = Number(qty);
-    // const cartProduct = { ...product, qty };
-    // console.log(cartProduct);
     dispatch(addToCart({ product, qty: qty }));
     navigate("/cart");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    addProductReview({ productId, data: { rating, comment } });
+    console.log({ productId, data: { rating: Number(rating), comment } });
+    addProductReview({
+      productId,
+      review: { rating: Number(rating), comment },
+    });
   };
   return (
     <>
@@ -51,7 +74,7 @@ const SingleProduct = () => {
         {isLoading ? (
           <Loading />
         ) : isError ? (
-          <Error variant="alert-danger">{error.data.message}</Error>
+          <Error variant="alert-error">{error?.data?.message}</Error>
         ) : (
           <>
             <div className="row">
@@ -99,18 +122,6 @@ const SingleProduct = () => {
                             max={5}
                             className="bg-gray-100 text-center"
                           />
-                          {/* <select
-                            value={qty}
-                            onChange={(e) => setQty(e.target.value)}
-                          >
-                            {[...Array(product?.countInStock).keys()].map(
-                              (x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              )
-                            )}
-                          </select> */}
                         </div>
                         <button
                           onClick={() => handleAddToCart(product)}
@@ -153,7 +164,7 @@ const SingleProduct = () => {
                 <div className="my-4">
                   {reviewLoading && <Loading />}
                   {reviewError && (
-                    <Error variant="alert-danger">{reviewError}</Error>
+                    <Error variant="alert-error">{errorMessage}</Error>
                   )}
                 </div>
                 {userInfo ? (
@@ -182,6 +193,8 @@ const SingleProduct = () => {
                         className="col-12 bg-light p-3 mt-2 border-0 rounded"
                       ></textarea>
                     </div>
+                    <p>{isSuccess && "Review added successfully"}</p>
+                    <Toast />
                     <div className="my-3">
                       <button
                         type="submit"

@@ -1,4 +1,4 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -17,14 +17,14 @@ const CartScreen = () => {
   const { productId } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const user = JSON.parse(localStorage.getItem("auth"));
+  const navigate = useNavigate();
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
-  // console.log(user, productId);
+  const auth = JSON.parse(localStorage.getItem("auth"));
   const cart = useSelector((state) => state.cart);
+  // const auth = useSelector((state) => state.auth);
+  console.log(auth.accessToken);
   const { cartItems, cartTotalAmount } = cart;
   // const total = cartItems?.reduce((a, i) => a + i.qty * i.price, 0).toFixed(2);
-  console.log(cartTotalAmount);
 
   useEffect(() => {
     if (productId) {
@@ -32,13 +32,13 @@ const CartScreen = () => {
     }
   }, [qty, productId]);
 
-  // const handleCheckout = (e) => {
-  //   if (user?.token) {
-  //     navigate(`/shipping`);
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // };
+  const handleCheckout = () => {
+    if (auth?.accessToken) {
+      navigate("/shipping");
+    } else {
+      navigate("/login");
+    }
+  };
   const handleClearCart = () => {
     dispatch(clearCart());
   };
@@ -114,18 +114,6 @@ const CartScreen = () => {
                       <i className="fa-solid fa-plus"></i>
                     </button>
                   </div>
-                  {/* <select
-                   value={item.qty}
-                   onChange={(e) =>
-                    dispatch(addToCart(item.product, Number(e.target.value)))
-                  
-                  >
-                     {[...Array(item?.countInStock).keys()].map((x) => (
-                  <option key={x + 1} value={x + 1}>
-                    {x + 1}
-                  </option>
-                ))} 
-                  </select> */}
                 </div>
                 <div className="cart-price mt-3 mt-md-0 col-md-2 align-items-sm-end align-items-center d-flex flex-column justify-content-center col-sm-7">
                   <h6>PRICE</h6>
@@ -154,7 +142,7 @@ const CartScreen = () => {
               </Link>
               {cartTotalAmount > 0 && (
                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
-                  <button>Checkout</button>
+                  <button onClick={handleCheckout}>Checkout</button>
                 </div>
               )}
             </div>

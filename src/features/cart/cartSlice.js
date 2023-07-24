@@ -11,7 +11,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       //check product existence
       const isProductExist = state.cartItems.findIndex(
         (item) => item?.product?._id === action.payload?.product?._id
@@ -38,7 +38,7 @@ const cartSlice = createSlice({
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     incrementQuantity: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       //check product existence
       const isProductExist = state.cartItems.findIndex(
         (item) => item?.product?._id === action.payload?.product?._id
@@ -50,7 +50,7 @@ const cartSlice = createSlice({
       }
     },
     decrementQuantity: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       //check product existence
       const isProductExist = state.cartItems.findIndex(
         (item) => item?.product?._id === action.payload?.product?._id
@@ -79,7 +79,7 @@ const cartSlice = createSlice({
         (acc, item) => acc + item.product?.price * item.qty,
         0
       );
-      console.log(subTotal);
+      // console.log(subTotal);
       state.cartTotalAmount = Number(subTotal);
     },
   },

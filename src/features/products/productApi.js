@@ -13,11 +13,24 @@ export const quizMarkApi = apiSlice.injectEndpoints({
       query: (id) => `api/products/${id}`,
     }),
     addProductReview: builder.mutation({
-      query: ({ productId, data }) => ({
+      query: ({ productId, review }) => ({
         url: `/api/products/${productId}/review`,
         method: "POST",
-        body: data,
+        body: { review: review },
       }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const { data: review } = await queryFulfilled;
+          console.log(review);
+          dispatch(
+            apiSlice.util.updateQueryData("getProduct", undefined, (draft) => {
+              draft.push(review);
+            })
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      },
     }),
   }),
 });
