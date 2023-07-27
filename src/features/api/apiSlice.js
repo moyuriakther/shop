@@ -16,6 +16,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: [],
+  // refetchOnMountOrArgChange: 30,
+  // keepUnusedDataFor: 600,
   endpoints: () => ({}),
 });

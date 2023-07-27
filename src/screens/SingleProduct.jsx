@@ -7,6 +7,7 @@ import {
 } from "../features/products/productApi";
 import moment from "moment/moment";
 import Error from "../components/loadingError/Error";
+import { toast } from "react-toastify";
 import Toast from "../components/loadingError/Toast";
 import Loading from "../components/loadingError/Loading";
 import Rating from "../components/homeComponents/Rating";
@@ -21,7 +22,7 @@ const toastObjects = {
 };
 
 const SingleProduct = () => {
-  const userInfo = { email: "admin@gamil.com" };
+  const userInfo = JSON.parse(localStorage.getItem("auth"))?.user;
   const { productId } = useParams();
   const dispatch = useDispatch();
 
@@ -30,6 +31,7 @@ const SingleProduct = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useGetProductQuery(productId);
   const [
     addProductReview,
@@ -48,9 +50,10 @@ const SingleProduct = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Product added successfully", toastObjects);
+      toast.success("Review added successfully", toastObjects);
       setRating(0);
       setComment("");
+      refetch();
     }
   }, [isSuccess]);
 
@@ -59,13 +62,16 @@ const SingleProduct = () => {
     dispatch(addToCart({ product, qty: qty }));
     navigate("/cart");
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ productId, data: { rating: Number(rating), comment } });
-    addProductReview({
-      productId,
-      review: { rating: Number(rating), comment },
-    });
+    try {
+      await addProductReview({
+        productId,
+        review: { rating: Number(rating), comment },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>
@@ -193,10 +199,10 @@ const SingleProduct = () => {
                         className="col-12 bg-light p-3 mt-2 border-0 rounded"
                       ></textarea>
                     </div>
-                    <p>{isSuccess && "Review added successfully"}</p>
                     <Toast />
                     <div className="my-3">
                       <button
+                        disabled={reviewLoading}
                         type="submit"
                         className="col-12 round-black-btn border-0 p-3"
                       >
@@ -206,13 +212,13 @@ const SingleProduct = () => {
                   </form>
                 ) : (
                   <div className="my-3">
-                    <Error variant={"alert-warning"}>
+                    <button className={"btn btn-warning"}>
                       Please{" "}
                       <Link to="/login">
                         <strong>Login</strong>
                       </Link>{" "}
                       to write a review
-                    </Error>
+                    </button>
                   </div>
                 )}
               </div>

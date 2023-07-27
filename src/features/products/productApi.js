@@ -8,6 +8,8 @@ export const quizMarkApi = apiSlice.injectEndpoints({
     // }),
     getAllProducts: builder.query({
       query: () => `/api/products/allProducts`,
+      // timeout: 1000,
+      keepUnusedDataFor: 5,
     }),
     getProduct: builder.query({
       query: (id) => `api/products/${id}`,
@@ -18,19 +20,6 @@ export const quizMarkApi = apiSlice.injectEndpoints({
         method: "POST",
         body: { review: review },
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const { data: review } = await queryFulfilled;
-          console.log(review);
-          dispatch(
-            apiSlice.util.updateQueryData("getProduct", undefined, (draft) => {
-              draft.push(review);
-            })
-          );
-        } catch (err) {
-          console.log(err);
-        }
-      },
     }),
   }),
 });

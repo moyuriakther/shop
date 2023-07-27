@@ -12,6 +12,7 @@ export const store = configureStore({
     cart: cartSliceReducer,
     filters: searchSliceReducer,
     wishlists: wishlistReducer,
+    // shippingAddress:
   },
   // devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>

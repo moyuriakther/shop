@@ -22,7 +22,7 @@ const CartScreen = () => {
   const auth = JSON.parse(localStorage.getItem("auth"));
   const cart = useSelector((state) => state.cart);
   // const auth = useSelector((state) => state.auth);
-  console.log(auth.accessToken);
+  // console.log(auth.accessToken);
   const { cartItems, cartTotalAmount } = cart;
   // const total = cartItems?.reduce((a, i) => a + i.qty * i.price, 0).toFixed(2);
 
