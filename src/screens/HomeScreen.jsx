@@ -3,16 +3,16 @@ import CallToActionSection from "../components/homeComponents/CallToActionSectio
 import ContactInfo from "../components/homeComponents/ContactInfo";
 import ShopSection from "../components/homeComponents/ShopSection";
 import Footer from "../components/Footer";
-import { useParams } from "react-router-dom";
+import CustomCarousel from "../components/homeComponents/CustomCarousel";
 
 const HomeScreen = () => {
   window.scrollTo(0, 0);
-  const { pagenumber } = useParams();
 
   return (
     <div>
       <Header />
-      <ShopSection pagenumber={pagenumber} />
+      <CustomCarousel />
+      <ShopSection />
       <CallToActionSection />
       <ContactInfo />
       <Footer />

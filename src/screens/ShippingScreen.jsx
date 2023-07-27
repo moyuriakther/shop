@@ -1,16 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const ShippingScreen = () => {
   window.scrollTo(0, 0);
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
 
+  const shippingDataFromLocalStorage = JSON.parse(
+    localStorage.getItem("shippingAddress")
+  );
+
+  useEffect(() => {
+    setAddress(shippingDataFromLocalStorage?.address);
+    setCity(shippingDataFromLocalStorage?.city);
+    setPostalCode(shippingDataFromLocalStorage?.postalCode);
+    setCountry(shippingDataFromLocalStorage?.country);
+  }, [shippingDataFromLocalStorage]);
+
   const submitHandlers = (e) => {
     e.preventDefault();
+    const shippingData = { address, city, postalCode, country };
+    console.log(shippingData);
+    localStorage.setItem("shippingAddress", JSON.stringify(shippingData));
+    navigate("/payment");
   };
   return (
     <>

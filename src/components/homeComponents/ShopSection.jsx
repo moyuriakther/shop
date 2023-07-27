@@ -1,21 +1,48 @@
-import { Link } from "react-router-dom";
-import { useGetProductsQuery } from "../../features/products/productApi";
+import { useNavigate } from "react-router-dom";
+import { useGetAllProductsQuery } from "../../features/products/productApi";
 import Loading from "../loadingError/Loading";
 import Error from "../loadingError/Error";
-import { useSelector } from "react-redux";
-import Rating from "./Rating";
+// import Rating from "./Rating";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+// import { addToWishlist } from "../../features/wishlist/wishSlice";
+import { addToCart } from "../../features/cart/cartSlice";
+import ProductCard from "./ProductCard";
 
-const ShopSection = (props) => {
-  const { pagenumber } = props;
-  const filters = useSelector((state) => state.filters);
-  const { search } = filters;
-  // console.log(search, pagenumber);
+const ShopSection = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const favorites = useSelector((state) => state.favorites.favorites);
+  // const isFavorite = favorites.some((item) => item.id === favoriteProduct.id);
   const {
     data: products,
     isLoading,
     isError,
     error,
-  } = useGetProductsQuery(search, pagenumber);
+  } = useGetAllProductsQuery();
+
+  // const handleAddToWishlist = (product) => {
+  //   dispatch(addToWishlist(product));
+  //   navigate("/wishlist");
+  // };
+  const handleAddToCart = (product) => {
+    dispatch(addToCart({ product, qty: 1 }));
+    navigate("/cart");
+  };
+  const filters = useSelector((state) => state.filters);
+  const { search } = filters;
+
+  const searchProduct = (product) => {
+    if (search) {
+      return product?.name
+        .trim()
+        .toLowerCase()
+        .includes(search.trim().toLowerCase());
+    } else {
+      return true;
+    }
+  };
+  useEffect(() => {}, []);
 
   return (
     <div className="container">
@@ -31,31 +58,15 @@ const ShopSection = (props) => {
                 <Error>{error?.data?.message}</Error>
               ) : (
                 <>
-                  {products?.products?.map((product) => (
+                  {products?.filter(searchProduct).map((product) => (
                     <div
-                      className="shop col-lg-4 col-md-6 col-sm-6"
+                      className="shop col-lg-3 col-md-6 col-sm-6"
                       key={product?._id}
                     >
-                      <div className="border-product">
-                        <Link to={`/products/${product._id}`}>
-                          <div className="shopBack">
-                            <img src={product?.image} alt={product?.name} />
-                          </div>
-                        </Link>
-                        <div className="shoptext">
-                          <p>
-                            <Link to={`/products/${product?._id}`}>
-                              {product?.name}
-                            </Link>
-                            new shoe
-                          </p>
-                          <Rating
-                            value={product?.rating}
-                            text={`${product?.reviews.length} reviews`}
-                          ></Rating>
-                          <h3>$ {product?.price}</h3>
-                        </div>
-                      </div>
+                      <ProductCard
+                        product={product}
+                        handleAddToCart={handleAddToCart}
+                      />
                     </div>
                   ))}
                 </>

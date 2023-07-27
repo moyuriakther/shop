@@ -5,7 +5,8 @@ import moment from "moment";
 
 const ProfileScreen = () => {
   const auth = JSON.parse(localStorage.getItem("auth"));
-  // console.log(auth.user);
+  console.log(auth.user);
+
   return (
     <>
       <Header />

@@ -2,13 +2,13 @@ import { useSelector } from "react-redux";
 
 export default function useAuth() {
   const auth = useSelector((state) => state.auth);
-  const user = window.localStorage.getItem("userInfo");
-  const token = JSON.parse(user);
+  const localAuth = JSON.parse(localStorage.getItem("auth"));
+  // console.log(localAuth);
   if (auth?.accessToken && auth?.user) {
-    if (token) {
-      return true;
-    } else {
-      return false;
-    }
+    return true;
+  } else if (localAuth?.accessToken && localAuth.user) {
+    return true;
+  } else {
+    return false;
   }
 }

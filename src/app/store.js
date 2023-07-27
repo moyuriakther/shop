@@ -3,6 +3,7 @@ import { apiSlice } from "../features/api/apiSlice";
 import authSliceReducer from "../features/auth/authSlice";
 import cartSliceReducer from "../features/cart/cartSlice";
 import searchSliceReducer from "../features/searchSlice";
+import wishlistReducer from "../features/wishlist/wishSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,8 @@ export const store = configureStore({
     auth: authSliceReducer,
     cart: cartSliceReducer,
     filters: searchSliceReducer,
+    wishlists: wishlistReducer,
+    // shippingAddress:
   },
   // devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>

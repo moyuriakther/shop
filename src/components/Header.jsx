@@ -11,6 +11,7 @@ const Header = () => {
   const location = useLocation();
   // console.log(location);
   // const history = useNavigate();
+  const { wishlistItems } = useSelector((state) => state?.wishlists);
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const cartQuantity = cartItems.reduce(
@@ -26,6 +27,7 @@ const Header = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(updateFilters({ search: search }));
+    console.log(search);
   };
 
   const handleLogout = () => {
@@ -151,10 +153,7 @@ const Header = () => {
                 </Link>
               </div>
               <div className="col-md-6 col-8 d-flex align-items-center">
-                {location.pathname === "/cart" ||
-                location.pathname === "/profile" ? (
-                  ""
-                ) : (
+                {location.pathname === "/" && (
                   <form className="input-group" onSubmit={handleSearch}>
                     <input
                       value={search}
@@ -203,6 +202,10 @@ const Header = () => {
                 <Link to="/cart" className="cart-mobile-icon">
                   <i className="fas fa-shopping-bag text-success"></i>
                   <span className="badge">{cartQuantity}</span>
+                </Link>
+                <Link to="/wishlist" className="cart-mobile-icon">
+                  <i className={`fa-solid fa-heart favorite text-success`}></i>
+                  <span className="badge">{wishlistItems?.length}</span>
                 </Link>
               </div>
             </div>
