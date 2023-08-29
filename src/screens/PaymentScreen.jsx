@@ -8,7 +8,7 @@ const PaymentScreen = () => {
   const navigate = useNavigate();
   // const [paymentMethod, setPaymentMethod] = useState("PayPal");
   const cart = useSelector((state) => state.cart);
-  const { cartTotalAmount } = cart;
+  const { cartTotalAmount, cartItems } = cart;
 
   const shippingDataFromLocalStorage = JSON.parse(
     localStorage.getItem("shippingAddress")
@@ -47,7 +47,10 @@ const PaymentScreen = () => {
           </div>
           {/* <button type="submit">Continue</button> */}
           <Elements stripe={stripePromise}>
-            <CheckoutForm cartTotalAmount={cartTotalAmount} />
+            <CheckoutForm
+              cartTotalAmount={cartTotalAmount}
+              cartItems={cartItems}
+            />
           </Elements>
         </div>
       </div>

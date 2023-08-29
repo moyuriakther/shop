@@ -3,12 +3,20 @@ import { apiSlice } from "../api/apiSlice";
 export const paymentApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createPaymentIntent: builder.mutation({
-      query: (data) => ({
-        url: `api/payment`,
+      query: (price) => ({
+        url: `api/create-payment-intent`,
         method: "POST",
-        data,
+        body: price,
+      }),
+    }),
+    createPayment: builder.mutation({
+      query: (payment) => ({
+        url: "api/create-payment-intent/payment",
+        method: "POST",
+        body: payment,
       }),
     }),
   }),
 });
-export const { useCreatePaymentIntentMutation } = paymentApi;
+export const { useCreatePaymentIntentMutation, useCreatePaymentMutation } =
+  paymentApi;

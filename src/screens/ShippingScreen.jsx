@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 
@@ -11,16 +11,16 @@ const ShippingScreen = () => {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
 
-  const shippingDataFromLocalStorage = JSON.parse(
-    localStorage.getItem("shippingAddress")
-  );
+  // const shippingDataFromLocalStorage = JSON.parse(
+  //   localStorage.getItem("shippingAddress")
+  // );
 
-  useEffect(() => {
-    setAddress(shippingDataFromLocalStorage?.address);
-    setCity(shippingDataFromLocalStorage?.city);
-    setPostalCode(shippingDataFromLocalStorage?.postalCode);
-    setCountry(shippingDataFromLocalStorage?.country);
-  }, [shippingDataFromLocalStorage]);
+  // useEffect(() => {
+  //   setAddress(shippingDataFromLocalStorage?.address);
+  //   setCity(shippingDataFromLocalStorage?.city);
+  //   setPostalCode(shippingDataFromLocalStorage?.postalCode);
+  //   setCountry(shippingDataFromLocalStorage?.country);
+  // }, [shippingDataFromLocalStorage]);
 
   const submitHandlers = (e) => {
     e.preventDefault();
