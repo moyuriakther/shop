@@ -4,7 +4,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
   
-    baseUrl: "https://shop-backend-flax.vercel.app/api",
+    baseUrl: "https://shop-backend-flax.vercel.app",
     prepareHeaders: async (headers, { getState }) => {
       const token = getState()?.auth?.accessToken;
       const localAuth = JSON.parse(localStorage.getItem("auth"))?.accessToken;
