@@ -3,7 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://shop-backend-bpgi.onrender.com",
+  
+    baseUrl: "https://shop-backend-flax.vercel.app/api",
     prepareHeaders: async (headers, { getState }) => {
       const token = getState()?.auth?.accessToken;
       const localAuth = JSON.parse(localStorage.getItem("auth"))?.accessToken;
